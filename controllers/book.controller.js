@@ -12,9 +12,9 @@ const createBook = async (request, response) => {
         
         const { title , auther } = request.body
 
-        const existingBook = await Book.find({title})
+        const existingBook = await Book.findOne({ title })
 
-        if (!existingBook) {
+        if (existingBook) {
 
             return response.status(400).json({
 
@@ -24,13 +24,16 @@ const createBook = async (request, response) => {
 
         const createBook = new Book({
             title,
-            auther
+            auther,
+            adminId: request.user.id
+
+
 
         })
 
         await createBook.save()
 
-        return response.status(200).json({
+        return response.status(201).json({
             m: "Book created successfully ",
             createBook
         })
@@ -144,7 +147,61 @@ const deleteBook = async (request, response) => {
 }
 
 
+const getAllBooks = async (request, response) => {
 
+    try {
+
+
+        const { query } = request
+
+        const page = +query.page || 1
+        const limit = +query.limit || 5
+        const searchValue = query.searchValue
+        const skip = (page - 1) * limit
+
+        const searchQuery = {
+
+            
+        }
+
+        if (searchValue) {
+
+            searchQuery.$or = [
+                { title: { $regex: searchValue, $options: "i" } },
+                { auther: { $regex: searchValue, $options: "i" } },
+
+            ];
+        }
+
+
+        const books = await Book.find(searchQuery)
+            .skip(skip)
+            .limit(limit)
+
+        const totalBooks = await Book.countDocuments(searchQuery)
+
+        return response.status(201).json({
+
+            message: "All books fetched successfully",
+            totalBooks,
+            totPages: Math.ceil(totalBooks / limit),
+            books
+          
+
+        })
+
+
+    } catch (error) {
+
+        return response.status(500).json({
+
+            message: " failed to fetch books",
+            error: error.message
+
+        });
+
+    }
+}
 
 
 
@@ -164,5 +221,6 @@ const deleteBook = async (request, response) => {
 module.exports = {
     createBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    getAllBooks
 }

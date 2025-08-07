@@ -37,7 +37,7 @@ const signUp = async (request, response) => {
         // console.log(process.env.JWTSecretKey);
         const token = JWT.sign(
 
-            { id: createUser._id, email: createUser.email },
+            { id: createUser._id, email: createUser.email , role : createUser.role},
             process.env.JWTSecretKey,
             { expiresIn: "1d" }
         )
@@ -89,7 +89,7 @@ const login = async (request, response) => {
         }
 
         const token = JWT.sign(
-            { id: user._id, email: user.email },
+            { id: user._id, email: user.email  , role : user.role},
             process.env.JWTSecretKey,
             { expiresIn: "1d" });
 

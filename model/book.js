@@ -19,11 +19,23 @@ auther:{
 
 },
 
-
-admin :{
+adminId :{
 
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
+},
+
+
+  reviewId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Review",
+    required: true
+  },
+
+createAt:{
+
+    type : Date,
+    default: Date.now
 }
 
 

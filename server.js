@@ -33,6 +33,7 @@ connectDb()
 app.use("/auth",require("./routes/auth.routes"))
 app.use("/book",require("./routes/book.route"))
 app.use("/review",require("./routes/review.route"))
+app.use("/admin",require("./routes/admin.routes"))
 
 
 

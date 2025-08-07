@@ -46,15 +46,15 @@ const isAdmin = async (request , response , next)=>{
     try {
 
 
-        const user = await User.find({
+        // const user = await User.find({
 
-            role : " admin"
-        })
+        //     role : " admin"
+        // })
 
       
-        if(request.user.role === !user){
+        if(request.user.role !== "admin"){
             return response.status(400).json({
-                m : "Access denied"
+                m : "Access denied , Admin Only"
 
             })
         }

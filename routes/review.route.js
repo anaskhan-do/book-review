@@ -12,8 +12,11 @@ const router = express.Router()
 
 
 router.post("/addReview/:id",authMidlleware , addReview)
-router.put("/updateReview" , updateReview)
-router.delete("/delReview" , delReview)
+
+router.put("/updateReview/:id" ,authMidlleware , updateReview)
+
+router.delete("/delReview/:id",authMidlleware , delReview)
+
 router.get("/getAllReviews" , getAllReview)
 
 
